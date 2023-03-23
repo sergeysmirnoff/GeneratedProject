@@ -21,9 +21,8 @@ def lookup(link: str):
     opt = webdriver.ChromeOptions()
     opt.add_experimental_option("excludeSwitches", ["enable-logging"])
     opt.add_argument("--disable-gpu")
-    # service = ChromeService(executable_path="C://Users//a317310647//PycharmProjects//autocosmmrfbe1//chromedriver.exe")
-    # driver = webdriver.Chrome(service=service, options=opt)
-    driver = webdriver.Chrome()
+    service = ChromeService(executable_path=".\\chromedriver.exe")
+    driver = webdriver.Chrome(service=service, options=opt)
     global address
     address = link
     driver.get(link)
@@ -53,7 +52,10 @@ def find_identifier(elem):
     for k, v in attributes.items():
         if k == attr_id:
             if k == 'class':
-                v = v[0]
+                v1 = ""
+                for i in range(len(v)):
+                    v1 = v1 + v[i]
+                v = v1
             has_attr = True
             if check_unique(v):
                 unique_elements.append(elem)
@@ -99,6 +101,8 @@ def create_mapper(name: str, mode):
     for elem in unique_elements:
         attr_value = elem.get(attr_id, default="oops")
         if attr_id == 'class':
+            if len(attr_value) == 0:
+                continue
             attr_value = attr_value[0]
         st = f"\"//*[@{attr_id}='{attr_value}']\""
         if elem.has_attr("name"):
@@ -108,16 +112,15 @@ def create_mapper(name: str, mode):
         function_name = re.sub("[-/@#%^&()!`~?><=+*']", "_", function_name)
         function_name = function_name.replace('-', '_').replace("/", "_")
         if elem.get("type") is not None:
-            function_name = function_name + "_" + elem.get("type")
+            function_name = function_name + "_" + attr_id + "_" + elem.get("type")
         else:
             function_name = function_name + "_" + elem.name
-        # f.write(f"\tdef {function_name}(self):\n\t\treturn self.sd.get_element({st}, 'xpath')")
-        f.write(f"\tdef {function_name}(self):\n\t\treturn self.sd.find_element(By.XPATH, {st})")
+        f.write(f"\tdef {function_name}(self):\n\t\treturn self.sd.get_element({st}, 'xpath')")
         f.write("\n\n")
     f.close()
 
-#search_and_create("https://www.w3schools.com/", "id", "basic_map2", "w")
-search_and_create("https://profile.w3schools.com/log-in?redirect_url=https%3A%2F%2Fmy-learning.w3schools.com", "id", (sys.argv[1:])[0], "w")
+search_and_create("https://my-learning.w3schools.com/", "id", (sys.argv[1:])[0], "w")
+search_and_create("https://my-learning.w3schools.com/", "class", (sys.argv[1:])[0], "a")
 
 # time.sleep(4)
 # search_and_create("http://128.90.13.104:8084/ows-mmr", "class", "login", "a")
