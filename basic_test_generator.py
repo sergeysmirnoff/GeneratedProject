@@ -9,7 +9,7 @@ def generate_pytest_script(filename, map_file, url_to_test):
         f.write(f"from selenium.webdriver.chrome.service import Service\n")
         f.write(f"from utilities.custom_logger import CustomLogger\n")
         f.write(f"from utilities.verify import Verify\n")
-        f.write(f"from {map_file} import Basic_login\n")
+        f.write(f"from {map_file} import basic_login\n")
 
         f.write(f"\n\nclass TestBasicLogin:\n")
         f.write(f"\tdriver = None\n")
@@ -26,8 +26,8 @@ def generate_pytest_script(filename, map_file, url_to_test):
         f.write(f"\t\tcls.driver = webdriver.Chrome(service=service)\n")
         f.write(f"\t\tcls.logger = CustomLogger('template test', 'logs')\n")
         f.write(f"\t\tcls.sd = SeleniumDriver(driver=cls.driver, logger=cls.logger)\n")
-        f.write(f"\t\tcls.driver.get({url_to_test})\n")
-        f.write(f"\t\tcls.login = Basic_login(cls.sd)\n")
+        f.write(f"\t\tcls.driver.get('{url_to_test}')\n")
+        f.write(f"\t\tcls.login = basic_login(cls.sd)\n")
         f.write(f"\t\tcls.verify = Verify(cls.sd)\n")
         f.write(f"\t\tcls.logger.debug('setup')\n")
 

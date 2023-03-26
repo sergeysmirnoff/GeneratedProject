@@ -1,5 +1,7 @@
 import re
 import sys
+import time
+
 from bs4 import BeautifulSoup, NavigableString
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
@@ -27,6 +29,7 @@ def lookup(link: str):
     address = link
     driver.get(link)
     global html
+    time.sleep(3)
     html = driver.page_source
     global s
     s = BeautifulSoup(html, features="html.parser")
