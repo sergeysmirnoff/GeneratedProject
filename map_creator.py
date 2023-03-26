@@ -104,11 +104,13 @@ def create_mapper(name: str, mode):
     for elem in unique_elements:
         attr_value = elem.get(attr_id, default="oops")
         st = None
+        locator = "xpath"
         if attr_id == 'class':
             if len(attr_value) == 0:
                 continue
             attr_value = attr_value[0]
             st = f"\"[{attr_id}^='{attr_value}']\""
+            locator = "css"
         else:
             st = f"\"//*[@{attr_id}='{attr_value}']\""
         if elem.has_attr("name"):
@@ -121,7 +123,7 @@ def create_mapper(name: str, mode):
             function_name = function_name + "_" + elem.get("type")
         else:
             function_name = function_name + "_" + elem.name
-        f.write(f"\tdef {function_name}(self):\n\t\treturn self.sd.get_element({st}, 'xpath')")
+        f.write(f"\tdef {function_name}(self):\n\t\treturn self.sd.get_element({st}, '{locator}')")
         f.write("\n\n")
     f.close()
 
