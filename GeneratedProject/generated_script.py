@@ -1,59 +1,52 @@
-# map_file: map_creator
-
-
-import time
-import pytest
+from interactions.selenium_driver import SeleniumDriver
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from map_creator import search_and_create
+from selenium.webdriver.chrome.service import Service
+from utilities.custom_logger import CustomLogger
+from utilities.verify import Verify
+from basic_map import Basic_login
 
 
-class TestBasic:
+class TestBasicLogin:
+	driver = None
+	login = None
+	sd = None
+	verify = None
+	username = 'gocelax227@loongwin.com'
+	c_password = 'hackaTon2023!'
+	i_password = c_password + '$'
+
 	@classmethod
 	def setup_class(cls):
-		cls.driver = webdriver.Chrome()
-		cls.url = "https://www.w3schools.com/"
-		search_and_create(cls.url, "id", 'basic_map', 'w')
-		cls.map_file_name = 'basic_map'
-		from basic_map import Basic_map
-		cls.basic_map = Basic_map(cls.driver)
-
-	@pytest.fixture(autouse=True)
-	def run_around_tests(self):
-		self.driver.get(self.url)
-
-	@staticmethod
-	def get_function(type_of_element):
-		from basic_map import Basic_map
-		lst_a = dir(Basic_map)
-		for func_name in lst_a:
-			if type_of_element in func_name:
-				return getattr(Basic_map, func_name)
+		service = Service(executable_path='C://Users//swuser//PycharmProjects//TemplateProject9//chromedriver.exe')
+		cls.driver = webdriver.Chrome(service=service)
+		cls.logger = CustomLogger('template test', 'logs')
+		cls.sd = SeleniumDriver(driver=cls.driver, logger=cls.logger)
+		cls.driver.get(https://profile.w3schools.com/)
+		cls.login = Basic_login(cls.sd)
+		cls.verify = Verify(cls.sd)
+		cls.logger.debug('setup')
 
 	def test1(self):
-		search_func = self.get_function('text')
-		search_element = search_func(self.basic_map)
-		search_element.send_keys('Python')
-		search_element.send_keys(Keys.RETURN)
-		time.sleep(2)
-		assert 'Python' in self.driver.title
+		# incorrect credentials check
+		self.sd.clear_input_field(element=self.login.email_text())
+		self.sd.send_keys(element=self.login.email_text(), data=self.username)
+		self.sd.clear_input_field(element=self.login.current_password_password())
+		self.sd.send_keys(element=self.login.current_password_password(), data=self.i_password)
+		self.sd.element_click(element=self.login.login_btn())
+		self.sd.wait(10)
+		self.verify.verify_values_match(expected='https://profile.w3schools.com/', actual=self.sd.get_current_url())
 
 	def test2(self):
-		search_func = self.get_function('text')
-		search_element = search_func(self.basic_map)
-		search_element.send_keys('HTML')
-		button_func = self.get_function('button')
-		button_element = button_func(self.basic_map)
-		button_element.click()
-		time.sleep(2)
-		assert 'HTML' in self.driver.title
+		# correct credential check
+		self.sd.clear_input_field(element=self.login.email_text())
+		self.sd.send_keys(element=self.login.email_text(), data=self.username)
+		self.sd.clear_input_field(element=self.login.current_password_password())
+		self.sd.send_keys(element=self.login.current_password_password(), data=self.c_password)
+		self.sd.element_click(element=self.login.login_btn())
+		self.sd.wait(10)
+		self.verify.verify_values_match(expected='https://my-learning.w3schools.com/', actual=self.sd.get_current_url())
 
-	def test3(self):
-		a_func = self.get_function('_a')
-		a_element = a_func(self.basic_map)
-		assert a_element.is_displayed()
-
-	def test4(self):
-		a_func = self.get_function('_a')
-		a_element = a_func(self.basic_map)
-		assert a_element.is_enabled()
+	@classmethod
+	def teardown_class(cls):
+		cls.sd.close_browser()
+		cls.logger.debug('teardown')
