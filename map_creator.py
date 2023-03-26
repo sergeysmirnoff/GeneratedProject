@@ -103,11 +103,14 @@ def create_mapper(name: str, mode):
         f.write("\tdef __init__(self, sd):\n\t\tself.sd = sd\n\n")
     for elem in unique_elements:
         attr_value = elem.get(attr_id, default="oops")
+        st = None
         if attr_id == 'class':
             if len(attr_value) == 0:
                 continue
             attr_value = attr_value[0]
-        st = f"\"//*[@{attr_id}='{attr_value}']\""
+            st = f"[{attr_id}^='{attr_value}']"
+        else:
+            st = f"\"//*[@{attr_id}='{attr_value}']\""
         if elem.has_attr("name"):
             function_name = elem.get("name")
         else:
