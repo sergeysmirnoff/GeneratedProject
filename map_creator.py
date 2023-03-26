@@ -29,7 +29,7 @@ def lookup(link: str):
     address = link
     driver.get(link)
     global html
-    time.sleep(3)
+    time.sleep(7)
     html = driver.page_source
     global s
     s = BeautifulSoup(html, features="html.parser")
@@ -97,7 +97,7 @@ def create_mapper(name: str, mode):
     if mode != "a":
         f.write(f"from selenium.webdriver.common.by import By\n")
         f.write(f"# this is a mapper for page: {address}\n")
-        x = name.split('\\')[-1].capitalize()
+        x = name.split('/')[-1]
         f.write(f"class {x}:\n")
         f.write("\n")
         f.write("\tdef __init__(self, sd):\n\t\tself.sd = sd\n\n")
@@ -115,7 +115,7 @@ def create_mapper(name: str, mode):
         function_name = re.sub("[-/@#%^&()!`~?><=+*']", "_", function_name)
         function_name = function_name.replace('-', '_').replace("/", "_")
         if elem.get("type") is not None:
-            function_name = function_name + "_" + "_" + elem.get("type")
+            function_name = function_name + "_" + elem.get("type")
         else:
             function_name = function_name + "_" + elem.name
         f.write(f"\tdef {function_name}(self):\n\t\treturn self.sd.get_element({st}, 'xpath')")
