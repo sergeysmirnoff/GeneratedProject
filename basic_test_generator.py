@@ -22,7 +22,7 @@ def generate_pytest_script(filename, map_file, url_to_test):
 
         f.write(f"\n\t@classmethod\n")
         f.write(f"\tdef setup_class(cls):\n")
-        f.write(f"\t\tservice = Service(executable_path='C://Users//swuser//PycharmProjects//TemplateProject9//chromedriver.exe')\n")
+        f.write(f"\t\tservice = Service(executable_path='C://Users//swuser//PycharmProjects//TemplateProject005//chromedriver.exe')\n")
         f.write(f"\t\tcls.driver = webdriver.Chrome(service=service)\n")
         f.write(f"\t\tcls.logger = CustomLogger('template test', 'logs')\n")
         f.write(f"\t\tcls.sd = SeleniumDriver(driver=cls.driver, logger=cls.logger)\n")

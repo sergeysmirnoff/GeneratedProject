@@ -112,7 +112,7 @@ def create_mapper(name: str, mode):
         function_name = re.sub("[-/@#%^&()!`~?><=+*']", "_", function_name)
         function_name = function_name.replace('-', '_').replace("/", "_")
         if elem.get("type") is not None:
-            function_name = function_name + "_" + attr_id + "_" + elem.get("type")
+            function_name = function_name + "_" + "_" + elem.get("type")
         else:
             function_name = function_name + "_" + elem.name
         f.write(f"\tdef {function_name}(self):\n\t\treturn self.sd.get_element({st}, 'xpath')")
