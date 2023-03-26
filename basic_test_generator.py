@@ -37,7 +37,7 @@ def generate_pytest_script(filename, map_file, url_to_test):
         f.write(f"\t\tself.sd.send_keys(element=self.login.email_text(), data=self.username)\n")
         f.write(f"\t\tself.sd.clear_input_field(element=self.login.current_password_password())\n")
         f.write(f"\t\tself.sd.send_keys(element=self.login.current_password_password(), data=self.i_password)\n")
-        f.write(f"\t\tself.sd.element_click(element=self.login.login_btn())\n")
+        f.write(f"\t\tself.sd.element_click(element=self.login.LoginModal_cta_bottom_box_button_login__5Fbwv_div())\n")
         f.write(f"\t\tself.sd.wait(10)\n")
         f.write(f"\t\tself.verify.verify_values_match(expected='https://profile.w3schools.com/', actual=self.sd.get_current_url())\n")
 
@@ -47,7 +47,7 @@ def generate_pytest_script(filename, map_file, url_to_test):
         f.write(f"\t\tself.sd.send_keys(element=self.login.email_text(), data=self.username)\n")
         f.write(f"\t\tself.sd.clear_input_field(element=self.login.current_password_password())\n")
         f.write(f"\t\tself.sd.send_keys(element=self.login.current_password_password(), data=self.c_password)\n")
-        f.write(f"\t\tself.sd.element_click(element=self.login.login_btn())\n")
+        f.write(f"\t\tself.sd.element_click(element=self.login.LoginModal_cta_bottom_box_button_login__5Fbwv_div())\n")
         f.write(f"\t\tself.sd.wait(10)\n")
         f.write(f"\t\tself.verify.verify_values_match(expected='https://my-learning.w3schools.com/', actual=self.sd.get_current_url())\n")
 
