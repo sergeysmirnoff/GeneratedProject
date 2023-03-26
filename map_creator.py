@@ -108,7 +108,7 @@ def create_mapper(name: str, mode):
             if len(attr_value) == 0:
                 continue
             attr_value = attr_value[0]
-            st = f"[{attr_id}^='{attr_value}']"
+            st = f"\"[{attr_id}^='{attr_value}']\""
         else:
             st = f"\"//*[@{attr_id}='{attr_value}']\""
         if elem.has_attr("name"):
